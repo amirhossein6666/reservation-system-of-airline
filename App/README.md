@@ -1,1 +1,1 @@
-the dificult project of YAZD University
+the difficult project of YAZD University
