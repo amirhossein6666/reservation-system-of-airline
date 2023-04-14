@@ -40,7 +40,7 @@ public class Admin {
     public static void print_admin_menu(){
         App.clearScreen();
         System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . . . .");
-        System.out.println("\t Admin menue option");
+        System.out.println("\t\t   Admin menue option");
         System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . . . .\n");
         System.out.println("<1>  add ticket");
         System.out.println("<2>  update ticket");
@@ -56,6 +56,7 @@ public class Admin {
         String FlightId = "";
         Scanner AddTicket = new Scanner(System.in);
         while(true){
+            flag = 1;
             System.out.println("what is the ticket's flight id");
             String id_test = AddTicket.nextLine();
             for (int i = 0; i < Search.tickets.size(); i++) {
@@ -93,6 +94,8 @@ public class Admin {
         App.PressAnyKey();
     }
     public static void update_ticket(){
+        int flag = 1;
+        String new_flight_id = "";
         Scanner update_input = new Scanner(System.in);
         App.clearScreen();
         System.out.println("what is your desired ticket's flight_id that you want to update");
@@ -101,8 +104,25 @@ public class Admin {
         int update_section = update_input.nextInt();
         switch (update_section){
             case 1:{
-                System.out.println("what is your desired new flight_id");
-                Search.tickets.get(tick_num-1).set_flight_id(update_input.next());
+                while(true) {
+                    flag = 1;
+                    System.out.println("what is your desired new flight_id");
+                    String update_test = update_input.next();
+                    for (int i = 0; i < Search.tickets.size(); i++){
+                        if (update_test.equals(Search.tickets.get(i).get_flight_id())){
+                            flag = 0;
+                            break;
+                        }
+                    }
+                    if (flag == 1){
+                        new_flight_id = update_test;
+                        break;
+                    }
+                    else{
+                        System.out.println("this ticket's flight id is already exists");
+                    }
+                }
+                Search.tickets.get(tick_num).set_flight_id(new_flight_id);
                 App.clearScreen();
                 System.out.println("Done : the tickets is updated");
                 App.PressAnyKey();
@@ -111,7 +131,7 @@ public class Admin {
             }
             case 2:{
                 System.out.println("what is your desired new date");
-                Search.tickets.get(tick_num-1).set_Date(update_input.next());
+                Search.tickets.get(tick_num).set_Date(update_input.next());
                 App.clearScreen();
                 System.out.println("Done : the tickets is updated");
                 App.PressAnyKey();
@@ -120,7 +140,7 @@ public class Admin {
             }
             case 3:{
                 System.out.println("waht is your desired new time");
-                Search.tickets.get(tick_num-1).set_time(update_input.next());
+                Search.tickets.get(tick_num).set_time(update_input.next());
                 App.clearScreen();
                 System.out.println("Done : the tickets is updated");
                 App.PressAnyKey();
@@ -129,7 +149,7 @@ public class Admin {
             } 
             case 4:{
                 System.out.println("what is your desired new seat");
-                Search.tickets.get(tick_num-1).set_seats(update_input.nextInt());
+                Search.tickets.get(tick_num).set_seats(update_input.nextInt());
                 App.clearScreen();
                 System.out.println("Done : the tickets is updated");
                 App.PressAnyKey();
@@ -151,7 +171,7 @@ public class Admin {
         System.out.println("what is your desired ticket's flight_id");
         int tick_num = Tickect.find_ticket(RemoveTicket.next());
         // RemoveTicket.close();
-        Search.tickets.remove(tick_num-1);   
+        Search.tickets.remove(tick_num);   
         System.out.println("the ticket is removed");
         App.PressAnyKey();
         admin_menu();

@@ -50,7 +50,7 @@ public class Passenger {
     public static int check_user(String user_in , String pass_in){
         int flag = 0 , pass_number = 0;
         for (int i = 0; i < App.num_of_pass; i++) {
-            if (user_in.equals(App.passengers[i].get_username()) && pass_in.equals(App.passengers[i].get_password())){     
+            if (user_in.equals(App.passengers.get(i).get_username()) && pass_in.equals(App.passengers.get(i).get_password())){     
                 flag = 1;
                 pass_number = i+1;
             }
@@ -69,7 +69,7 @@ public class Passenger {
         Scanner n_pass = new Scanner(System.in);   // n_pass mean new password
         new_pasword = n_pass.next();
         // n_pass.close();
-        App.passengers[pass_num-1].set_password(new_pasword);
+        App.passengers.get(pass_num-1).set_password(new_pasword);
         System.out.println("Done your new password is " + new_pasword);
         App.PressAnyKey();
     }
@@ -122,21 +122,22 @@ public class Passenger {
         // FI_booking.close();
         for (int i = 0; i < Search.tickets.size(); i++) {
             if (f_booking.equals(Search.tickets.get(i).get_flight_id()) ){
-                if (App.passengers[pass_num-1].get_charge() >= Search.tickets.get(i).get_price()){
+                if (App.passengers.get(pass_num-1).get_charge() >= Search.tickets.get(i).get_price()){
                     if (Search.tickets.get(i).get_seats() > 0){
                         Search.tickets.get(i).set_seats(Search.tickets.get(i).get_seats() - 1);
-                        App.passengers[pass_num-1].set_charge(App.passengers[pass_num-1].get_charge() - Search.tickets.get(i).get_price());
+                        App.passengers.get(pass_num-1).set_charge(App.passengers.get(pass_num-1).get_charge() - Search.tickets.get(i).get_price());
                         Tickect tick = new Tickect(f_booking, Search.tickets.get(i).get_origin(), Search.tickets.get(i).get_destination(), Search.tickets.get(i).get_Date(), Search.tickets.get(i).get_time(),Search.tickets.get(i).get_price(), Search.tickets.get(i).get_seats());
                         ArrayList<Tickect> test_BT = new ArrayList<>();
-                        for (int j = 0; j < App.passengers[pass_num-1].get_num_of_booked_tickets(); j++) {
-                            test_BT.add(j, App.passengers[pass_num-1].get_booked_tickets().get(j));
+                        for (int j = 0; j < App.passengers.get(pass_num-1).get_num_of_booked_tickets(); j++) {
+                            test_BT.add(j, App.passengers.get(pass_num-1).get_booked_tickets().get(j));
                         }
-                        test_BT.add(App.passengers[pass_num-1].get_num_of_booked_tickets() , tick);
-                        App.passengers[pass_num -1].set_booked_tickets(test_BT);
-                        App.passengers[pass_num-1].set_num_of_booked_tickets(App.passengers[pass_num-1].get_num_of_booked_tickets() + 1);
+                        test_BT.add(App.passengers.get(pass_num-1).get_num_of_booked_tickets() , tick);
+                        App.passengers.get(pass_num-1).set_booked_tickets(test_BT);
+                        App.passengers.get(pass_num-1).set_num_of_booked_tickets(App.passengers.get(pass_num-1).get_num_of_booked_tickets() + 1);
                         flag = 1;
                         System.out.println("Done");
                         App.PressAnyKey();
+                        break;
                     }
                     else{
                         System.out.println("there are no seats available");
@@ -164,18 +165,18 @@ public class Passenger {
         Scanner cancel_i = new Scanner(System.in);
         String tick_canc = cancel_i.nextLine();
         // cancel_i.close();
-        if (App.passengers[pass_num-1].get_num_of_booked_tickets() == 0){
+        if (App.passengers.get(pass_num-1).get_num_of_booked_tickets() == 0){
             System.out.println("there are no booked tickets for cancellation");
             App.PressAnyKey();
         }
         else{
-            for (int i = 0; i < App.passengers[pass_num-1].get_num_of_booked_tickets(); i++) {
-                if (tick_canc.equals(App.passengers[pass_num-1].get_booked_tickets().get(i).get_flight_id())){
-                    int j = Tickect.find_ticket(App.passengers[pass_num-1].get_booked_tickets().get(i).get_flight_id());
+            for (int i = 0; i < App.passengers.get(pass_num-1).get_num_of_booked_tickets(); i++) {
+                if (tick_canc.equals(App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_flight_id())){
+                    int j = Tickect.find_ticket(App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_flight_id());
                     Search.tickets.get(j).set_seats(Search.tickets.get(j).get_seats() + 1);
-                    App.passengers[pass_num-1].set_charge(App.passengers[pass_num-1].get_charge() + Search.tickets.get(j).get_price());
-                    App.passengers[pass_num- 1].get_booked_tickets().remove(i);
-                    App.passengers[pass_num-1].set_num_of_booked_tickets(App.passengers[pass_num-1].get_num_of_booked_tickets() - 1);
+                    App.passengers.get(pass_num-1).set_charge(App.passengers.get(pass_num-1).get_charge() + Search.tickets.get(j).get_price());
+                    App.passengers.get(pass_num-1).get_booked_tickets().remove(i);
+                    App.passengers.get(pass_num-1).set_num_of_booked_tickets(App.passengers.get(pass_num-1).get_num_of_booked_tickets() - 1);
                     System.out.println("the ticket is cancelled");
                     flag = 1;
                     App.PressAnyKey();
@@ -191,19 +192,19 @@ public class Passenger {
     }
     public static void show_booked_tickets(int pass_num){
         App.clearScreen();
-        if (App.passengers[pass_num - 1].get_num_of_booked_tickets() == 0){
+        if (App.passengers.get(pass_num-1).get_num_of_booked_tickets() == 0){
             System.out.println("there are no booked tickets");
             App.PressAnyKey();
         }
         else{
-            for (int i = 0; i < App.passengers[pass_num -1].get_booked_tickets().size(); i++) {
-                System.out.print(i+1 + " ->  flight id: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_flight_id());
-                System.out.print("     origin: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_origin());
-                System.out.print("     destination: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_destination());
-                System.out.print("     Date: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_Date());
-                System.out.print("     time: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_time());
-                System.out.print("     price: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_price());
-                System.out.print("     seats: " + App.passengers[pass_num-1].get_booked_tickets().get(i).get_seats() + " \n");
+            for (int i = 0; i < App.passengers.get(pass_num-1).get_num_of_booked_tickets(); i++) {
+                System.out.print(i+1 + " ->  flight id: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_flight_id());
+                System.out.print("     origin: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_origin());
+                System.out.print("     destination: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_destination());
+                System.out.print("     Date: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_Date());
+                System.out.print("     time: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_time());
+                System.out.print("     price: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_price());
+                System.out.print("     seats: " + App.passengers.get(pass_num-1).get_booked_tickets().get(i).get_seats() + " \n");
             }
             App.PressAnyKey();
         }
@@ -215,7 +216,7 @@ public class Passenger {
         Scanner add_charge = new Scanner(System.in);
         long added_charge = add_charge.nextLong();
         // add_charge.close();
-        App.passengers[pass_num-1].set_charge(App.passengers[pass_num-1].get_charge() + added_charge);
+        App.passengers.get(pass_num-1).set_charge(App.passengers.get(pass_num-1).get_charge() + added_charge);
         System.out.println("Done. your charge increased  " + added_charge);
         App.PressAnyKey();
     }

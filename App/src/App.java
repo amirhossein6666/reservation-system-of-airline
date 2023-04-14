@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 
 public class App {
-    static Passenger[] passengers = new Passenger[100];
+    static ArrayList<Passenger> passengers = new ArrayList<>();
     static int num_of_pass = 0; // the number of passengers
     static int num_of_tickets = 0;  // the number of tickets
     static int pass_num = 0; // the number of a passenger
@@ -70,7 +71,7 @@ public class App {
         String use_test = SignUp.next();
         if(num_of_pass != 0){
             for (int i = 0; i < num_of_pass; i++) {
-                if(use_test.equals(passengers[i].get_username())){
+                if(use_test.equals(passengers.get(i).get_username())){
                     System.out.println("the username exists try again");
                     App.PressAnyKey();
                     flag = 0;
@@ -86,8 +87,8 @@ public class App {
         }
         System.out.println("enter your password");
         password = SignUp.next();
-
-        passengers[num_of_pass] = new Passenger(num_of_pass + 1, username, password, 0  , 0 , null);
+        Passenger pass_test = new Passenger(num_of_pass + 1, username, password, 0  , 0 , null);
+        passengers.add(num_of_pass, pass_test); 
         num_of_pass = num_of_pass +1;
         enter();
     }
@@ -147,7 +148,7 @@ public class App {
         System.out.println("\t\tpassenger menue option");
         System.out.println(". . . . . . . . . . . . . . . . . . . . . . . . . . .\n. . . . . . . . . . . . . . . . . . . . . . . . . . .\n");
         System.out.println("your information");
-        System.out.println("username: " + App.passengers[pass_num-1].get_username() + "     password: " + App.passengers[pass_num-1].get_password() + "     charge: " + App.passengers[pass_num-1].get_charge());
+        System.out.println("username: " + App.passengers.get(pass_num-1).get_username() + "     password: " + App.passengers.get(pass_num-1).get_password() + "     charge: " + App.passengers.get(pass_num-1).get_charge());
         System.out.println("<1>  change password");
         System.out.println("<2>  search flight tickets");
         System.out.println("<3>  booking tickets");
