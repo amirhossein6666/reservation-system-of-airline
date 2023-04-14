@@ -1,3 +1,3 @@
 # reservation-system-of-airline
 
-a deficult project of Yazd University
+a defficult project of Yazd University
