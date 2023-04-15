@@ -7,7 +7,7 @@ public class Passenger {
     private String password;
     private long charge;
     private int num_of_booked_tickets;
-    public static ArrayList<Tickect> booked_tickets = new ArrayList<Tickect>();
+    public ArrayList<Tickect> booked_tickets = new ArrayList<Tickect>();
 
     public Passenger(int pass_num , String username, String password , int charge , int num_of_booked_tickets , ArrayList<Tickect> booked_tickets){
         this.pass_num = pass_num;
@@ -44,7 +44,7 @@ public class Passenger {
     public void set_num_of_booked_tickets(int Num_of_booked_tickets){
         this.num_of_booked_tickets = Num_of_booked_tickets;
     }
-    public static void set_booked_tickets(ArrayList<Tickect> Booked_tickets){
+    public void set_booked_tickets(ArrayList<Tickect> Booked_tickets){
         booked_tickets = Booked_tickets;
     }
     public static int check_user(String user_in , String pass_in){
